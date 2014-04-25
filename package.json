@@ -1,0 +1,19 @@
+{
+  "name": "filepreviews",
+  "version": "1.0.0",
+  "description": "Demo client library for FilePreviews.io - Generate image previews and metadata from almost any kind of file",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "npm install && grunt",
+    "start": "grunt watch"
+  },
+  "author": "Giovanni Collazo (@gcollazo)",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-concat": "^0.4.0"
+  }
+}

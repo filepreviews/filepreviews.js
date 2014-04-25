@@ -1,0 +1,17 @@
+#fileURLInput {
+  width: 100%
+}
+
+.results-section {
+  display: none;
+}
+
+#previewImage {
+  max-width: 100%;
+}
+
+#metadataConsole {
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
+}

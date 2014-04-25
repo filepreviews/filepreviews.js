@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<meta name="description" content="FilePreviews.io" />
+
+<link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http://api.filepicker.io/v1/filepicker.js"></script>
+
+<script src="../dist/filepreviews.min.js"></script>
+<script src="demo.js"></script>
+
+<title>FilePreviews.io Demo</title>
+
+</head>
+<body>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h1>FilePreviews.io Demo</h1>
+      </div>
+      <!-- /.col-sm-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <form id="fileForm" class="form-inline">
+          <div class="row">
+            <div class="col-xs-10">
+              <input type="url" id="fileURLInput" placeholder="Enter file url" class="form-control input-lg">
+            </div>
+            <!-- /.col-xs-10 -->
+            <div class="col-xs-2">
+              <button class="btn btn-lg btn-primary" type="submit">Go</button>
+            </div>
+            <!-- /.col-xs-2 -->
+          </div>
+          <!-- /.row -->
+          <div class="row">
+            <div class="col-sm-12">
+              <a href="#" id="uploadFileLink">Upload a file</a>
+            </div>
+            <!-- /.col-sm-12 -->
+          </div>
+          <!-- /.row -->
+        </form>
+      </div>
+      <!-- /.col-sm-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+      <div class="col-sm-12">
+        <br><strong>Examples:</strong>
+        <ul class="list-unstyled">
+          <li><a href="http://example.com/file1.png" class="example-link">Adobe Photoshop File (.psd)</a></li>
+          <li><a href="http://example.com/file2.png" class="example-link">Adobe Illustrator File (.ai)</a></li>
+          <li><a href="http://example.com/file3.png" class="example-link">PDF File (.pdf)</a></li>
+          <li><a href="http://example.com/file4.png" class="example-link">Microsoft Word Document (.docx)</a></li>
+          <li><a href="http://example.com/file5.png" class="example-link">Microsoft Excel Document (.xlsx)</a></li>
+          <li><a href="http://example.com/file6.png" class="example-link">Microsoft PowerPoint Document (.pptx)</a></li>
+        </ul>
+        <!-- /.list-inline -->
+      </div>
+      <!-- /.col-sm-12 -->
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <h4>
+          Advanced settigns
+          <small>
+            <a href="#" id="toggleCheckboxesLink">Check all</a>
+          </small>
+        </h4>
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <h5>Metadata</h5>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> OCR <small>Extract text</small>
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> Photoshop Layers
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> EXIF
+                </label>
+              </div>
+              <!-- /.checkbox -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-4">
+              <h5>Image hashing</h5>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> aHash
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> pHash
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> dHash
+                </label>
+              </div>
+              <!-- /.checkbox -->
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-4">
+              <h5>Sizes</h5>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> 20px wide preview
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> 100px wide preview
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> 300px wide preview
+                </label>
+              </div>
+              <!-- /.checkbox -->
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value=""> Original size preview
+                </label>
+              </div>
+              <!-- /.checkbox -->
+            </div>
+            <!-- /.col-sm-4 -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.well -->
+      </div>
+      <!-- /.col-sm-12 -->
+    </div>
+    <!-- /.row -->
+
+    <hr class="results-section">
+
+    <section class="row results-section">
+      <div class="col-sm-12">
+        <h4>Results</h4>
+        <div class="row">
+          <div class="col-sm-6">
+            <a href="" id="previewImageLink"><img id="previewImage"></a>
+          </div>
+          <div class="col-sm-6">
+            <pre id="metadataConsole">Processing, please wait...</pre>
+            <!-- /.well -->
+          </div>
+        </div>
+      </div>
+      <!-- /#resultsSection -->
+    </section>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+</body>
+</html>

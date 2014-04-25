@@ -1,0 +1,24 @@
+{
+  "name": "filepreviews",
+  "version": "1.0.0",
+  "main": "dist/filepreviews.js",
+  "authors": [
+    "Giovanni Collazo <hello@gcollazo.com>"
+  ],
+  "description": "Demo client library for FilePreviews.io - Generate image previews and metadata from almost any kind of file",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:GetBlimp/filepreviews.js"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "sha256": "http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"
+  }
+}
