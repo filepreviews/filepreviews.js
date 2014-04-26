@@ -5,9 +5,6 @@ This is a client library for the **Demo API** of [FilePeviews.io](http://FilePev
 ```
 bower install filepreviews
 ```
-```
-npm install filepreviews
-```
 
 ## Demo
 We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
