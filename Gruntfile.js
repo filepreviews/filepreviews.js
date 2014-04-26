@@ -71,7 +71,6 @@ module.exports =  function(grunt) {
             dest: 'latest/filepreviews.min.js',
             options: { gzip: true }
           },
-
           {
             src: 'dist/filepreviews.js',
             dest: '<%= pkg.version %>/filepreviews.js',
