@@ -15,3 +15,7 @@
     word-wrap: normal;
     white-space: pre;
 }
+
+.preview-layer {
+    max-width: 100%;
+}

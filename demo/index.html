@@ -10,10 +10,8 @@
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="http://api.filepicker.io/v1/filepicker.js"></script>
 
-<script src="../dist/filepreviews.min.js"></script>
+<script src="../dist/filepreviews.js"></script>
 <script src="demo.js"></script>
-
-<script src="http://localhost:35729/livereload.js"></script>
 
 <title>FilePreviews.io Demo</title>
 
@@ -24,10 +22,17 @@
     <div class="row">
       <div class="col-sm-12">
         <h1>FilePreviews.io Demo</h1>
+        <p>After you submit a file URL or upload a file FilePreviews.io will process the file and generate image previews and a lot of other metadata depending on the file type.</p>
+        <p>For some files like <strong>PSD</strong> we can extract previews from all layers and even text. For <strong>PDF</strong> or <strong>Word documents</strong> we can extract all pages and all the text. For image files we can even do <strong>OCR</strong>.</p>
+        <p>Throw a file at us and see what happens.</p>
+        <p>Let us know what you think: <a href="mailto:hello@getblimp.com">hello@getblimp.com</a></p>
+        <p><a href="http://eepurl.com/To0U1" class="btn btn-success">Sign up to beta</a></p>
       </div>
       <!-- /.col-sm-12 -->
     </div>
     <!-- /.row -->
+
+    <hr><br>
 
     <div class="row">
       <div class="col-sm-12">
@@ -45,7 +50,7 @@
           <!-- /.row -->
           <div class="row">
             <div class="col-sm-12">
-              <a href="#" id="uploadFileLink">Upload a file</a>
+              <br><a href="#" id="uploadFileLink">Upload a file</a> (Max. 10MB)
             </div>
             <!-- /.col-sm-12 -->
           </div>
@@ -60,107 +65,16 @@
       <div class="col-sm-12">
         <br><strong>Examples:</strong>
         <ul class="list-unstyled">
-          <li><a href="http://example.com/file1.png" class="example-link">Adobe Photoshop File (.psd)</a></li>
-          <li><a href="http://example.com/file2.png" class="example-link">Adobe Illustrator File (.ai)</a></li>
-          <li><a href="http://example.com/file3.png" class="example-link">PDF File (.pdf)</a></li>
-          <li><a href="http://example.com/file4.png" class="example-link">Microsoft Word Document (.docx)</a></li>
-          <li><a href="http://example.com/file5.png" class="example-link">Microsoft Excel Document (.xlsx)</a></li>
-          <li><a href="http://example.com/file6.png" class="example-link">Microsoft PowerPoint Document (.pptx)</a></li>
+          <li><a href="https://www.filepicker.io/api/file/WHOGzEmPRSGNYKyHRBWk" class="example-link">Adobe Photoshop File (.psd) with multiple layers</a></li>
+          <li><a href="https://www.filepicker.io/api/file/nQsaWFMGQGOnkppU7v8w" class="example-link">Adobe Illustrator File (.ai)</a></li>
+          <li><a href="https://www.filepicker.io/api/file/mbsbe85FTIW6DzYlkav2" class="example-link">Micrsoft Word File (.doc) with multiple pages</a></li>
+          <li><a href="https://www.filepicker.io/api/file/QLOxaa2ETEOMSQ0kx4u1" class="example-link">Microsoft PowerPoint File (.ppt)</a></li>
+          <li><a href="https://www.filepicker.io/api/file/0ehaqJwCTSq4P6jMrix6" class="example-link">PDF File</a></li>
+          <li><a href="https://www.filepicker.io/api/file/0q6IyX0UQVGLAW5WheN4" class="example-link">SVG Image</a></li>
+          <li><a href="https://www.filepicker.io/api/file/3qIPATYQOCIKAG0SMGlG" class="example-link">PNG image with text</a></li>
+          <li><a href="https://www.filepicker.io/api/file/SDWUgqZTOiteVxTpOVkr" class="example-link">JPEG photo with EXIF data</a></li>
         </ul>
         <!-- /.list-inline -->
-      </div>
-      <!-- /.col-sm-12 -->
-    </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <div class="row">
-      <div class="col-sm-12">
-        <h4>
-          Advanced settigns
-          <small>
-            <a href="#" id="toggleCheckboxesLink">Check all</a>
-          </small>
-        </h4>
-        <div class="well">
-          <div class="row">
-            <div class="col-sm-4">
-              <h5>Metadata</h5>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> OCR <small>Extract text</small>
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> Photoshop Layers
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> EXIF
-                </label>
-              </div>
-              <!-- /.checkbox -->
-            </div>
-            <!-- /.col-sm-4 -->
-            <div class="col-sm-4">
-              <h5>Image hashing</h5>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> aHash
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> pHash
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> dHash
-                </label>
-              </div>
-              <!-- /.checkbox -->
-            </div>
-            <!-- /.col-sm-4 -->
-            <div class="col-sm-4">
-              <h5>Sizes</h5>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> 20px wide preview
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> 100px wide preview
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> 300px wide preview
-                </label>
-              </div>
-              <!-- /.checkbox -->
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" value=""> Original size preview
-                </label>
-              </div>
-              <!-- /.checkbox -->
-            </div>
-            <!-- /.col-sm-4 -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.well -->
       </div>
       <!-- /.col-sm-12 -->
     </div>
@@ -172,7 +86,7 @@
       <div class="col-sm-12">
         <h4>Results</h4>
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-6" id="imagesContainer">
             <a href="" id="previewImageLink"><img id="previewImage"></a>
           </div>
           <div class="col-sm-6">
