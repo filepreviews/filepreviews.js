@@ -60,7 +60,18 @@ module.exports =  function(grunt) {
       },
 
       cdn: {
-        sync: [
+        upload: [
+          {
+            src: 'dist/filepreviews.js',
+            dest: 'latest/filepreviews.js',
+            options: { gzip: true }
+          },
+          {
+            src: 'dist/filepreviews.min.js',
+            dest: 'latest/filepreviews.min.js',
+            options: { gzip: true }
+          },
+
           {
             src: 'dist/filepreviews.js',
             dest: '<%= pkg.version %>/filepreviews.js',
