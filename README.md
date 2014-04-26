@@ -13,21 +13,20 @@ npm install filepreviews
 
 ## Client side usage
 
+##### Latest version
 ```html
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.min.js"></script>
-
-<!-- or -->
-
+```
+```html
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.js"></script>
 ```
 
-Optionally you can link to a specific version of the library by doing
+##### You can also link to a specific version
 
 ```html
 <script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.min.js"></script>
-
-<!-- or -->
-
+```
+```html
 <script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.js"></script>
 ```
 
