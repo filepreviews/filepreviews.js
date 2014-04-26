@@ -1,40 +1,40 @@
 $(function() {
   'use strict';
 
-  var $fileForm = $('#fileForm'),
+  var previews,
+      $fileForm = $('#fileForm'),
       $fileURLInput = $('#fileURLInput'),
-      $uploadFileLink = $('#uploadFileLink'),
       $exampleLinks = $('.example-link'),
-
-      $toggleCheckboxesLink = $('#toggleCheckboxesLink'),
-      $advancedCheckboxes = $('input:checkbox'),
-      $resultsSection = $('.results-section'),
       $previewImage = $('#previewImage'),
-      $previewImageLink = $('#previewImageLink'),
+      $uploadFileLink = $('#uploadFileLink'),
+      $resultsSection = $('.results-section'),
       $imagesContainer = $('#imagesContainer'),
-      $metadataConsole = $('#metadataConsole');
+      $metadataConsole = $('#metadataConsole'),
+      $previewImageLink = $('#previewImageLink'),
+      $advancedCheckboxes = $('input:checkbox'),
+      $toggleCheckboxesLink = $('#toggleCheckboxesLink');
 
+  previews = new FilePreviews({
+    debug: true,
+    resultsUrl: 'http://demo.filepreviews.io.s3-website-us-east-1.amazonaws.com/'
+  });
 
   filepicker.setKey('Ah8QlzykQRGcsx1SaObz0z');
 
   var onFormSubmit = function(e) {
-    e.preventDefault();
-
     var url = $fileURLInput.val();
+
+    e.preventDefault();
 
     if (url) {
       $resultsSection.show();
-      $previewImage.attr('src', FilePreviews.getPreviewURL(url));
+      $previewImage.attr('src', previews.getPreviewURL(url));
       $previewImageLink.attr('href', '');
       $metadataConsole.html('Processing, please wait...');
 
-      /*
-       *
-       *  This is how we integrate with FilePreviews.io
-       *  Look mom, no servers!
-       *
-       */
-      FilePreviews.generate(url, function(err, result) {
+      // This is how we integrate with FilePreviews.io
+      // Look mom, no servers!
+      previews.generate(url, function(err, result) {
         if (err) {
           $metadataConsole.text('Something went wrong...');
           $previewImage.attr('src', 'http://i.imgur.com/caZYo6v.jpg');
@@ -43,61 +43,49 @@ $(function() {
           $previewImageLink.attr('href', result.previewURL + '?1');
           $metadataConsole.html(JSON.stringify(result.metadata, null, '  '));
 
-          // Check if file is a PSD
-          // to do some extra stuff
+          // Check if file is a PSD to do some extra stuff
           var psd = result.metadata.extra_data.psd;
-          if (psd) {
-            displayLayers(psd);
-          }
+          if (psd) displayLayers(psd);
         }
       });
     }
   };
 
-
   var displayLayers = function(psd) {
     psd.layers.forEach(function(layer) {
-      if (layer.layers) {
-        // This is a group extract sub-layers
-        displayLayers(layer);
-      }
-
+      if (layer.layers) displayLayers(layer); // This is a group extract sub-layers
       $('<hr class="preview-hr"><h5 class="preview-h5">' + layer.type + ': ' + layer.name + '</h5>').appendTo($imagesContainer);
       $('<img src="' + layer.url + '" class="preview-layer">').appendTo($imagesContainer);
     });
   };
 
-
   var onClickExampleLink = function(e) {
-    e.preventDefault();
-
     var $link = $(e.currentTarget),
         linkHref = $link.attr('href');
 
-    $('.preview-layer').remove();
+    e.preventDefault();
+
     $('.preview-hr').remove();
     $('.preview-h5').remove();
+    $('.preview-layer').remove();
     $fileURLInput.val(linkHref);
     $fileForm.submit();
   };
-
 
   var onUploadedFile = function(inkBlob) {
     $fileURLInput.val(inkBlob.url);
     $fileForm.submit();
   };
 
-
   var onClickUploadFileLink = function() {
     filepicker.pick(onUploadedFile);
   };
 
-
   var toggleCheckboxes = function(e) {
-    e.preventDefault();
-
     var allText = 'Check all',
         noneText = 'Uncheck all';
+
+    e.preventDefault();
 
     if ($toggleCheckboxesLink.text() === allText) {
       $toggleCheckboxesLink.text(noneText);
@@ -111,11 +99,9 @@ $(function() {
     });
   };
 
-
   // Event handlers
   $fileForm.submit(onFormSubmit);
   $exampleLinks.click(onClickExampleLink);
   $uploadFileLink.click(onClickUploadFileLink);
   $toggleCheckboxesLink.click(toggleCheckboxes);
-
 });
