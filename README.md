@@ -11,6 +11,26 @@ bower install filepreviews
 npm install filepreviews
 ```
 
+## Client side usage
+
+```html
+<script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.min.js"></script>
+
+<!-- or -->
+
+<script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.js"></script>
+```
+
+Optionally you can link to a specific version of the library by doing
+
+```html
+<script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.min.js"></script>
+
+<!-- or -->
+
+<script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.js"></script>
+```
+
 ## Build
 
 ```
