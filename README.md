@@ -1,6 +1,8 @@
 # FilePreviews.io
 This is a client library for the **Demo API** of [FilePeviews.io](http://FilePeviews.io) service. A lot more to come very soon.
 
+[Sign up to beta](http://eepurl.com/To0U1)
+
 ## Installation
 ```
 bower install filepreviews
