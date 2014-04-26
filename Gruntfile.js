@@ -10,10 +10,7 @@ module.exports =  function(grunt) {
 
     concat: {
       dist: {
-        src: [
-          'bower_components/sha256/index.js',
-          'src/**/*.js'
-        ],
+        src: ['src/**/*.js'],
         dest: 'dist/filepreviews.js'
       }
     },

@@ -1,104 +1,109 @@
-(function(window) {
+(function() {
   'use strict';
 
-  window.FilePreviews = {
-      _cache: {},
-      apiBaseURL: 'https://blimp-previews.herokuapp.com/?size=1&url=',
-      resultsBaseURL: 'http://demo.filepreviews.io.s3-website-us-east-1.amazonaws.com/',
+  var API_URL = 'https://blimp-previews.herokuapp.com/?size=1&url=',
+      FilePreviews;
 
-      hash: function(string) {
-        return CryptoJS.SHA256(string).toString();
-      },
+  FilePreviews = function(options) {
+    options = options || {};
 
-      generate: function(url, callback) {
-        var self = this,
-            urlHash = this.hash(url),
-            result;
+    this._cache = {};
+    this.debug = options.debug || false;
+    this.resultsUrl = options.resultsUrl;
+  };
 
-        if (this._cache[urlHash]) {
-          console.log('Cache hit');
-          result = this._cache[urlHash];
-          result.isCached = true;
-          callback(null, result);
+  FilePreviews.prototype._log = function(msg) {
+    if (this.debug) console.log(msg);
+    return this;
+  };
 
+  FilePreviews.prototype.hash = function(string) {
+    if (!CryptoJS) throw new Error('CryptoJS library not found.');
+    return CryptoJS.SHA256(string).toString();
+  };
+
+  FilePreviews.prototype.generate = function(url, callback) {
+    var urlHash = this.hash(url),
+        result;
+
+    if (this._cache[urlHash]) {
+      this._log('Cache hit');
+      result = this._cache[urlHash];
+      result.isCached = true;
+      callback(null, result);
+    } else { // Request preview
+      this._log('Cache miss');
+
+      this._submitJobToAPI(url, function(err, result) {
+        if (err) {
+          console.error('Something went wrong', err);
         } else {
-          // Request preview
-          console.log('Cache miss');
-
-          this._submitJobToAPI(url, function(err, result) {
-            if (err) {
-              console.error('Something went wrong');
-            } else {
-              self._cache[urlHash] = result;
-            }
-
-            console.log('Processing done...');
-            callback(err, result);
-          });
+          this._cache[urlHash] = result;
         }
-      },
 
-      _submitJobToAPI: function(url, callback) {
-        var self = this,
-            _url = this.getAPIRequestURL(url);
+        this._log('Processing done...');
+        callback(err, result);
+      }.bind(this));
+    }
+  };
 
-        $.get(_url)
-        .always(function(data, textStatus, jqXHR) {
-          console.log('API Request: ' + jqXHR.status);
+  FilePreviews.prototype._submitJobToAPI = function(url, callback) {
+    return $.get(this.getAPIRequestURL(url)).always(function(data, textStatus, jqXHR) {
+      this._log('API Request: ' + jqXHR.status);
 
-          if (jqXHR.status === 429) {
-            callback('Throttling Error, try later');
-          } else {
-            self._pollForMetadata(url, function(err, metadata) {
-              callback(null, {metadata: metadata, previewURL: self.getPreviewURL(url)});
-            });
-          }
-        });
-
-      },
-
-      _pollForMetadata: function(url, callback) {
-        var _url = this.getMetadataURL(url),
-            _getter;
-
-        _getter = function() {
-          console.log('Polling for metadata...');
-
-          $.getJSON(_url, function(data) {
-            callback(null, data);
-          })
-          .fail(function() {
-            setTimeout(_getter, 1000);
+      if (jqXHR.status === 429) {
+        callback('Throttling Error, try later');
+      } else {
+        this._pollForMetadata(url, function(err, metadata) {
+          callback(null, {
+            metadata: metadata,
+            previewURL: this.getPreviewURL(url)
           });
-        };
-
-        _getter();
-
-      },
-
-      getAPIRequestURL: function(url) {
-        return this.apiBaseURL + url;
-      },
-
-      getMetadataURL: function(url) {
-        return this.resultsBaseURL + this.hash(url) + '/metadata.json';
-      },
-
-      getPreviewURL: function(url) {
-        var result = this.resultsBaseURL;
-        result = result + this.hash(url) + '/';
-        result = result + this.getPreviewFilename(this.getFilename(url)) + '_original_1.png';
-
-        return result;
-      },
-
-      getFilename: function(url) {
-        return url.split('/').pop();
-      },
-
-      getPreviewFilename: function(filename) {
-        return filename.substr(0, filename.lastIndexOf('.')) || filename;
+        }.bind(this));
       }
-    };
+    }.bind(this));
+  };
 
-})(window);
+  FilePreviews.prototype._pollForMetadata = function(url, callback) {
+    var _getter = function() {
+      this._log('Polling for metadata...');
+
+      return $.getJSON(this.getMetadataURL(url), function(data) {
+        callback(null, data);
+      }).fail(function() {
+        setTimeout(_getter, 1000);
+      });
+    }.bind(this);
+
+    return _getter();
+  };
+
+  FilePreviews.prototype.getAPIRequestURL = function(url) {
+    return API_URL + url;
+  };
+
+  FilePreviews.prototype.getMetadataURL = function(url) {
+    return this.resultsUrl + this.hash(url) + '/metadata.json';
+  };
+
+  FilePreviews.prototype.getPreviewURL = function(url) {
+    return this.resultsUrl + this.hash(url) + '/' +
+    this.getPreviewFilename(this.getFilename(url)) + '_original_1.png';
+  };
+
+  FilePreviews.prototype.getFilename = function(url) {
+    return url.split('/').pop();
+  };
+
+  FilePreviews.prototype.getPreviewFilename = function(filename) {
+    return filename.substr(0, filename.lastIndexOf('.')) || filename;
+  };
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = FilePreviews;
+  } else {
+    window.FilePreviews = FilePreviews;
+  }
+
+  return FilePreviews;
+})();
