@@ -9,6 +9,9 @@ module.exports =  function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     concat: {
+      options: {
+        banner: '/* <%= pkg.name %> <%= pkg.version %> */\n'
+      },
       dist: {
         src: ['src/**/*.js'],
         dest: 'dist/filepreviews.js'

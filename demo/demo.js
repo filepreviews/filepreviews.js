@@ -14,10 +14,8 @@ $(function() {
       $advancedCheckboxes = $('input:checkbox'),
       $toggleCheckboxesLink = $('#toggleCheckboxesLink');
 
-  previews = new FilePreviews({
-    debug: true,
-    resultsUrl: 'http://demo.filepreviews.io.s3-website-us-east-1.amazonaws.com/'
-  });
+  // Instantiate FilePreviews
+  previews = new FilePreviews({debug: true});
 
   filepicker.setKey('Ah8QlzykQRGcsx1SaObz0z');
 
@@ -44,8 +42,12 @@ $(function() {
           $metadataConsole.html(JSON.stringify(result.metadata, null, '  '));
 
           // Check if file is a PSD to do some extra stuff
-          var psd = result.metadata.extra_data.psd;
-          if (psd) displayLayers(psd);
+          try {
+            var psd = result.metadata.extra_data.psd;
+            if (psd) displayLayers(psd);
+          } catch (err) {
+            // pass
+          }
         }
       });
     }
