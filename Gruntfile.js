@@ -13,7 +13,10 @@ module.exports =  function(grunt) {
         banner: '/* <%= pkg.name %> <%= pkg.version %> */\n'
       },
       dist: {
-        src: ['src/**/*.js'],
+        src: [
+          'bower_components/sha256/index.js',
+          'src/**/*.js'
+        ],
         dest: 'dist/filepreviews.js'
       }
     },
