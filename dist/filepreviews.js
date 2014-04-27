@@ -1,4 +1,4 @@
-/* filepreviews 1.0.4 */
+/* filepreviews 1.0.5 */
 /*
 CryptoJS v3.1.2
 code.google.com/p/crypto-js
@@ -20,7 +20,7 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
   'use strict';
 
   var API_URL = 'https://blimp-previews.herokuapp.com/?size=1&url=',
-      RESULTS_URL = 'http://demo.filepreviews.io.s3-website-us-east-1.amazonaws.com/',
+      RESULTS_URL = 'https://demo.filepreviews.io.s3-website-us-east-1.amazonaws.com/',
       FilePreviews;
 
   FilePreviews = function(options) {
