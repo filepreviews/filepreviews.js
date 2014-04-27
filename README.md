@@ -31,7 +31,8 @@ We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 
 #### Example code
 ```js
-FilePreviews.generate(url, function(err, result) {
+var previews = new FilePreviews({debug: true});
+previews.generate(url, function(err, result) {
   if (err) {
     console.error(err);
   } else {
