@@ -65,25 +65,33 @@ module.exports =  function(grunt) {
       cdn: {
         upload: [
           {
-            src: 'dist/filepreviews.js',
-            dest: 'latest/filepreviews.js',
+            src: 'dist/*.js',
+            dest: 'latest',
             options: { gzip: true }
           },
           {
-            src: 'dist/filepreviews.min.js',
-            dest: 'latest/filepreviews.min.js',
+            src: 'dist/*.js',
+            dest: '<%= pkg.version %>',
+            options: { gzip: true }
+          },
+
+          // Upload demo
+          {
+            src: 'dist/*.js',
+            dest: 'demo/dist',
             options: { gzip: true }
           },
           {
-            src: 'dist/filepreviews.js',
-            dest: '<%= pkg.version %>/filepreviews.js',
+            src: 'demo/*',
+            dest: 'demo/demo',
             options: { gzip: true }
           },
           {
-            src: 'dist/filepreviews.min.js',
-            dest: '<%= pkg.version %>/filepreviews.min.js',
+            src: 'bower_components/jquery/dist/*',
+            dest: 'demo/bower_components/jquery/dist',
             options: { gzip: true }
           }
+
         ]
       }
     }
