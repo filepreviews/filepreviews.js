@@ -96,6 +96,28 @@ module.exports =  function(grunt) {
 
         ]
       }
+    },
+
+    cloudfront: {
+      options: {
+        region: process.env.CF_DISTRIBUTION_REGION,
+        distributionId: process.env.CF_DISTRIBUTION_ID,
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        }
+      },
+
+      cnd: {
+        CallerReference: Date.now().toString(),
+        Paths: {
+          Quantity: 2,
+          Items: [
+            '/latest/filepreviews.min.js',
+            '/latest/filepreviews.min.js'
+          ]
+        }
+      }
     }
 
   });
@@ -105,8 +127,9 @@ module.exports =  function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-s3');
+  grunt.loadNpmTasks('grunt-cloudfront');
 
   grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-  grunt.registerTask('publish', ['jshint', 'concat', 'uglify', 's3']);
+  grunt.registerTask('publish', ['jshint', 'concat', 'uglify', 's3', 'cloudfront']);
 
 };
