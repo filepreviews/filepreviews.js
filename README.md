@@ -11,7 +11,7 @@ bower install filepreviews
 ## Demo
 We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 
-## Client side usage
+## Usage
 
 ##### Latest version
 ```html
@@ -33,12 +33,10 @@ We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 ```js
 var previews = new FilePreviews({debug: true});
 previews.generate(url, function(err, result) {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(result.previewURL);
-    console.log(result.metadata);
-  }
+  if (err) console.error(err);
+
+  console.log(result.previewURL);
+  console.log(result.metadata);
 });
 ```
 

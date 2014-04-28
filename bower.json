@@ -1,6 +1,6 @@
 {
   "name": "filepreviews",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/filepreviews.js",
   "authors": [
     "Giovanni Collazo <hello@gcollazo.com>"
@@ -19,9 +19,8 @@
     "tests"
   ],
   "devDependencies": {
-    "sha256": "https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js"
-  },
-  "dependencies": {
-    "jquery": "~2.1.1-rc2"
+    "sha256": "https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js",
+    "xhr-ajax": "~1.0.0",
+    "jquery": "~2.1.0"
   }
 }

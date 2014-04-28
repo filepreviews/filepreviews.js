@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <script src="../dist/filepreviews.js"></script>
+        <script>
+          var previews = new FilePreviews({debug: true}),
+              fileURL = 'http://google.com/logo339.png';
+          previews.generate(fileURL, function(err, result) {
+            if (err) console.err(err);
+            console.log(result);
+          });
+        </script>
+    </body>
+</html>

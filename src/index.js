@@ -37,42 +37,71 @@
 
       this._submitJobToAPI(url, function(err, result) {
         if (err) {
-          console.error('Something went wrong', err);
+          this._log('Error: ' + err);
         } else {
           this._cache[urlHash] = result;
         }
 
-        this._log('Processing done...');
+        this._log('Processing done :)');
         callback(err, result);
       }.bind(this));
     }
   };
 
   FilePreviews.prototype._submitJobToAPI = function(url, callback) {
-    return $.get(this.getAPIRequestURL(url)).always(function(data, textStatus, jqXHR) {
-      this._log('API Request: ' + jqXHR.status);
+    this._log('API request to: ' + this.getAPIRequestURL(url));
 
-      if (jqXHR.status === 429) {
-        callback('Throttling Error, try later');
-      } else {
+    ajax(this.getAPIRequestURL(url), {
+      success: function(response, xhr) {
+        this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
         this._pollForMetadata(url, function(err, metadata) {
           callback(null, {
             metadata: metadata,
             previewURL: this.getPreviewURL(url)
           });
         }.bind(this));
-      }
-    }.bind(this));
+      }.bind(this),
+
+      error: function(status, message, xhr) {
+        var error = 'API request error: ';
+        if (status === 429) {
+          error = error + 'Throttling error, try later';
+          this._log(error);
+          callback(error);
+        } else {
+          this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
+          this._pollForMetadata(url, function(err, metadata) {
+            callback(null, {
+              metadata: metadata,
+              previewURL: this.getPreviewURL(url)
+            });
+          }.bind(this));
+        }
+      }.bind(this)
+
+    });
   };
 
   FilePreviews.prototype._pollForMetadata = function(url, callback) {
-    var _getter = function() {
-      this._log('Polling for metadata...');
+    var tries = 1,
+        pause = 1000;
 
-      return $.getJSON(this.getMetadataURL(url), function(data) {
-        callback(null, data);
-      }).fail(function() {
-        setTimeout(_getter, 1000);
+    var _getter = function() {
+      this._log('Polling for metadata, tries: ' + tries);
+
+      ajax(this.getMetadataURL(url), {
+        success: function(response, xhr) {
+          this._log('Metadata found');
+          callback(null, JSON.parse(response));
+        }.bind(this),
+
+        error: function(status, message, xhr) {
+          pause = pause + (tries * 1000);
+          tries++;
+
+          this._log('Metadata not found next try in: ' + pause);
+          setTimeout(_getter, pause);
+        }.bind(this)
       });
     }.bind(this);
 
