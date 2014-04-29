@@ -51,7 +51,7 @@
     ajax(this.getAPIRequestURL(url, options), {
       success: function(response, xhr) {
         this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
-        this._pollForMetadata(url, function(err, metadata) {
+        this._pollForMetadata(url, options, function(err, metadata) {
           callback(null, {
             metadata: metadata,
             previewURL: this.getPreviewURL(url)
@@ -70,7 +70,7 @@
           this._pollForMetadata(url, function(err, metadata) {
             callback(null, {
               metadata: metadata,
-              previewURL: this.getPreviewURL(url)
+              previewURL: this.getPreviewURL(url, options)
             });
           }.bind(this));
         }
@@ -79,14 +79,20 @@
     });
   };
 
-  FilePreviews.prototype._pollForMetadata = function(url, callback) {
+  FilePreviews.prototype._pollForMetadata = function(url, options, callback) {
+    if (arguments.length === 2) {
+      if (Object.prototype.toString.call(options) === '[object Function]') {
+        callback = options;
+      }
+    }
+
     var tries = 1,
         pause = 1000;
 
     var _getter = function() {
       this._log('Polling for metadata, tries: ' + tries);
 
-      ajax(this.getMetadataURL(url), {
+      ajax(this.getMetadataURL(url, options), {
         success: function(response, xhr) {
           this._log('Metadata found');
           callback(null, JSON.parse(response));
@@ -137,13 +143,16 @@
     return API_URL + url + extraParams;
   };
 
-  FilePreviews.prototype.getMetadataURL = function(url) {
-    return this.resultsUrl + this.hash(url) + '/metadata.json';
+  FilePreviews.prototype.getMetadataURL = function(url, options) {
+    var hash = this.hash(this.getAPIRequestURL(url, options));
+    return this.resultsUrl + hash + '/metadata.json';
   };
 
-  FilePreviews.prototype.getPreviewURL = function(url) {
-    return this.resultsUrl + this.hash(url) + '/' +
-    this.getPreviewFilename(this.getFilename(url)) + '_original_1.png';
+  FilePreviews.prototype.getPreviewURL = function(url, options) {
+    var hash = this.hash(this.getAPIRequestURL(url, options));
+
+    return this.resultsUrl + hash + '/' +
+      this.getPreviewFilename(this.getFilename(url)) + '_original_1.png';
   };
 
   FilePreviews.prototype.getFilename = function(url) {
