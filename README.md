@@ -33,8 +33,25 @@ We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 ```js
 var previews = new FilePreviews({debug: true});
 previews.generate(url, function(err, result) {
-  if (err) console.error(err);
+  console.log(result.previewURL);
+  console.log(result.metadata);
+});
+```
 
+##### Options
+You can optinally send an options object
+```js
+var previews = new FilePreviews({debug: true});
+var options = {
+  size: {
+    width: 100,
+    height: 999,
+  },
+  // supported: 'exif', 'ocr', 'psd' or 'all' which means everything
+  metadata: ['exif', 'ocr', 'psd']
+}
+
+previews.generate(url, options, function(err, result) {
   console.log(result.previewURL);
   console.log(result.metadata);
 });

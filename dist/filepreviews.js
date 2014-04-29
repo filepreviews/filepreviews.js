@@ -607,14 +607,13 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
 (function() {
   'use strict';
 
-  var API_URL = 'https://blimp-previews.herokuapp.com/?size=1&url=',
+  var API_URL = 'https://blimp-previews.herokuapp.com/?url=',
       RESULTS_URL = 'https://s3.amazonaws.com/demo.filepreviews.io/',
       FilePreviews;
 
   FilePreviews = function(options) {
     options = options || {};
 
-    this._cache = {};
     this.debug = options.debug || false;
     this.resultsUrl = options.resultsUrl || RESULTS_URL;
   };
@@ -629,35 +628,33 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
     return CryptoJS.SHA256(string).toString();
   };
 
-  FilePreviews.prototype.generate = function(url, callback) {
-    var urlHash = this.hash(url),
-        result;
-
-    if (this._cache[urlHash]) {
-      this._log('Cache hit');
-      result = this._cache[urlHash];
-      result.isCached = true;
-      callback(null, result);
-    } else { // Request preview
-      this._log('Cache miss');
-
-      this._submitJobToAPI(url, function(err, result) {
-        if (err) {
-          this._log('Error: ' + err);
-        } else {
-          this._cache[urlHash] = result;
-        }
-
-        this._log('Processing done :)');
-        callback(err, result);
-      }.bind(this));
+  FilePreviews.prototype.generate = function(url, options, callback) {
+    if (arguments.length === 2) {
+      if (Object.prototype.toString.call(options) === '[object Function]') {
+        callback = options;
+      }
     }
+
+    this._submitJobToAPI(url, options, function(err, result) {
+      if (err) {
+        this._log('Error: ' + err);
+      }
+
+      this._log('Processing done :)');
+      callback(err, result);
+    }.bind(this));
   };
 
-  FilePreviews.prototype._submitJobToAPI = function(url, callback) {
-    this._log('API request to: ' + this.getAPIRequestURL(url));
+  FilePreviews.prototype._submitJobToAPI = function(url, options, callback) {
+    if (arguments.length === 2) {
+      if (Object.prototype.toString.call(options) === '[object Function]') {
+        callback = options;
+      }
+    }
 
-    ajax(this.getAPIRequestURL(url), {
+    this._log('API request to: ' + this.getAPIRequestURL(url, options));
+
+    ajax(this.getAPIRequestURL(url, options), {
       success: function(response, xhr) {
         this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
         this._pollForMetadata(url, function(err, metadata) {
@@ -714,8 +711,36 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
     return _getter();
   };
 
-  FilePreviews.prototype.getAPIRequestURL = function(url) {
-    return API_URL + url;
+  FilePreviews.prototype.getAPIRequestURL = function(url, options) {
+    if (arguments.length === 1) {
+      if (Object.prototype.toString.call(options) === '[object Function]') {
+        options = false;
+      }
+    }
+
+    var extraParams = '';
+
+    if (options) {
+      if (options.metadata) {
+        extraParams = '&metadata=' + options.metadata.join(',');
+      }
+
+      if (options.size) {
+        var size = '';
+
+        if (options.size.width) {
+          size = options.size.width;
+        }
+
+        if (options.size.height) {
+          size = size + 'x' + options.size.height;
+        }
+
+        extraParams = extraParams + '&size=' + size;
+      }
+    }
+
+    return API_URL + url + extraParams;
   };
 
   FilePreviews.prototype.getMetadataURL = function(url) {
