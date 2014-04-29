@@ -29,7 +29,7 @@ We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 <script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.js"></script>
 ```
 
-#### Example code
+### Example code
 ```js
 var previews = new FilePreviews({debug: true});
 previews.generate(url, function(err, result) {
@@ -38,8 +38,8 @@ previews.generate(url, function(err, result) {
 });
 ```
 
-##### Options
-You can optinally send an options object
+#### Options
+You can optinally send an options object.
 ```js
 var previews = new FilePreviews({debug: true});
 var options = {
