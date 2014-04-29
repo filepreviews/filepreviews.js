@@ -1,4 +1,4 @@
-/* filepreviews 1.0.8 */
+/* filepreviews 1.0.9 */
 /**
 * XMLHttpRequest.js Copyright (C) 2011 Sergey Ilinsky (http://www.ilinsky.com)
 *
@@ -660,7 +660,7 @@ d[e>>>5]|=128<<24-e%32;d[(e+64>>>9<<4)+14]=h.floor(b/4294967296);d[(e+64>>>9<<4)
         this._pollForMetadata(url, options, function(err, metadata) {
           callback(null, {
             metadata: metadata,
-            previewURL: this.getPreviewURL(url)
+            previewURL: this.getPreviewURL(url, options)
           });
         }.bind(this));
       }.bind(this),

@@ -54,7 +54,7 @@
         this._pollForMetadata(url, options, function(err, metadata) {
           callback(null, {
             metadata: metadata,
-            previewURL: this.getPreviewURL(url)
+            previewURL: this.getPreviewURL(url, options)
           });
         }.bind(this));
       }.bind(this),
