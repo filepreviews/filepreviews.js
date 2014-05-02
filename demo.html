@@ -6,7 +6,7 @@
 
           var previews = new FilePreviews({debug: true});
 
-          var url = 'https://www.filepicker.io/api/file/WHOGzEmPRSGNYKyHRBWk';
+          var url = 'http://www.securitymanagement.com/archive/library/smartcard_faqtech0802.pdf';
           var options = {
             size: {
               width: 100,
@@ -16,6 +16,7 @@
           };
 
           previews.generate(url, options, function(err, result) {
+            if (err) return console.error(err);
             console.log(result);
           });
 

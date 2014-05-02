@@ -19,7 +19,6 @@
     "tests"
   ],
   "devDependencies": {
-    "sha256": "https://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js",
     "xhr-ajax": "~1.0.0"
   }
 }

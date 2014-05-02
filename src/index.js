@@ -17,11 +17,6 @@
     return this;
   };
 
-  FilePreviews.prototype.hash = function(string) {
-    if (!CryptoJS) throw new Error('CryptoJS library not found.');
-    return CryptoJS.SHA256(string).toString();
-  };
-
   FilePreviews.prototype.generate = function(url, options, callback) {
     if (arguments.length === 2) {
       if (Object.prototype.toString.call(options) === '[object Function]') {
@@ -51,11 +46,19 @@
     ajax(this.getAPIRequestURL(url, options), {
       success: function(response, xhr) {
         this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
-        this._pollForMetadata(url, options, function(err, metadata) {
-          callback(null, {
-            metadata: metadata,
-            previewURL: this.getPreviewURL(url, options)
-          });
+
+        var data = JSON.parse(response);
+        this._log('API request response:', data);
+
+        this._pollForMetadata(data.metadata_url, options, function(err, metadata) {
+          if (err) {
+            callback(err);
+          } else {
+            callback(null, {
+              metadata: metadata,
+              previewURL: data.preview_url
+            });
+          }
         }.bind(this));
       }.bind(this),
 
@@ -63,23 +66,19 @@
         var error = 'API request error: ';
         if (status === 429) {
           error = error + 'Throttling error, try later';
-          this._log(error);
-          callback(error);
         } else {
-          this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
-          this._pollForMetadata(url, function(err, metadata) {
-            callback(null, {
-              metadata: metadata,
-              previewURL: this.getPreviewURL(url, options)
-            });
-          }.bind(this));
+          error = error + status;
         }
+        this._log(error);
+        callback(error);
+
       }.bind(this)
 
     });
   };
 
   FilePreviews.prototype._pollForMetadata = function(url, options, callback) {
+    this._log('Metadata poll url: ' + url);
     if (arguments.length === 2) {
       if (Object.prototype.toString.call(options) === '[object Function]') {
         callback = options;
@@ -92,17 +91,23 @@
     var _getter = function() {
       this._log('Polling for metadata, tries: ' + tries);
 
-      ajax(this.getMetadataURL(url, options), {
+      ajax(url, {
         success: function(response, xhr) {
           this._log('Metadata found');
-          callback(null, JSON.parse(response));
+          var data = JSON.parse(response);
+
+          if (data.error) {
+            callback(data.error);
+          } else {
+            callback(null, data);
+          }
         }.bind(this),
 
         error: function(status, message, xhr) {
           pause = pause + (tries * 1000);
           tries++;
 
-          this._log('Metadata not found next try in: ' + pause);
+          this._log('Metadata not found next try in: ' + pause / 1000 + 's');
           setTimeout(_getter, pause);
         }.bind(this)
       });
@@ -141,18 +146,6 @@
     }
 
     return API_URL + url + extraParams;
-  };
-
-  FilePreviews.prototype.getMetadataURL = function(url, options) {
-    var hash = this.hash(this.getAPIRequestURL(url, options));
-    return this.resultsUrl + hash + '/metadata.json';
-  };
-
-  FilePreviews.prototype.getPreviewURL = function(url, options) {
-    var hash = this.hash(this.getAPIRequestURL(url, options));
-
-    return this.resultsUrl + hash + '/' +
-      this.getPreviewFilename(this.getFilename(url)) + '_original_1.png';
   };
 
   FilePreviews.prototype.getFilename = function(url) {
