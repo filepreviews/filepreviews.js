@@ -47,7 +47,9 @@ var options = {
     width: 100,
     height: 999,
   },
-  // supported: 'exif', 'ocr', 'psd' or 'all' which means everything
+  // supported:
+  // 'exif', 'ocr', 'psd', 'checksum', 'multimedia',
+  // and 'all' which means everything
   metadata: ['exif', 'ocr', 'psd']
 }
 
