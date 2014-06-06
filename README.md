@@ -50,7 +50,11 @@ var options = {
   // supported:
   // 'exif', 'ocr', 'psd', 'checksum', 'multimedia',
   // and 'all' which means everything
-  metadata: ['exif', 'ocr', 'psd']
+  metadata: ['exif', 'ocr', 'psd'],
+
+  // supported:
+  // 'jpg', 'png'
+  format: 'jpg'
 }
 
 previews.generate(url, options, function(err, result) {

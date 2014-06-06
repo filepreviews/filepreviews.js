@@ -715,8 +715,13 @@
     var extraParams = '';
 
     if (options) {
+
       if (options.metadata) {
         extraParams = '&metadata=' + options.metadata.join(',');
+      }
+
+      if (options.format) {
+        extraParams = '&format=' + options.format;
       }
 
       if (options.size) {
