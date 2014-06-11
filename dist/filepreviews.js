@@ -590,15 +590,14 @@
 (function() {
   'use strict';
 
-  var API_URL = 'https://blimp-previews.herokuapp.com/?url=',
-      RESULTS_URL = 'https://s3.amazonaws.com/demo.filepreviews.io/',
+  var API_URL = 'https://api.filepreviews.io/v1/?url=',
       FilePreviews;
 
   FilePreviews = function(options) {
     options = options || {};
 
     this.debug = options.debug || false;
-    this.resultsUrl = options.resultsUrl || RESULTS_URL;
+    this.apiKey = options.apiKey;
   };
 
   FilePreviews.prototype._log = function(msg) {
@@ -632,7 +631,15 @@
 
     this._log('API request to: ' + this.getAPIRequestURL(url, options));
 
+    var ajaxHeaders = {};
+
+    if (this.apiKey) {
+      ajaxHeaders['X-API-KEY'] = this.apiKey;
+    }
+
     ajax(this.getAPIRequestURL(url, options), {
+      headers: ajaxHeaders,
+
       success: function(response, xhr) {
         this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
 
