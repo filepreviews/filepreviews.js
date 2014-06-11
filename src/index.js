@@ -2,14 +2,12 @@
   'use strict';
 
   var API_URL = 'https://blimp-previews.herokuapp.com/?url=',
-      RESULTS_URL = 'https://s3.amazonaws.com/demo.filepreviews.io/',
       FilePreviews;
 
   FilePreviews = function(options) {
     options = options || {};
 
     this.debug = options.debug || false;
-    this.resultsUrl = options.resultsUrl || RESULTS_URL;
   };
 
   FilePreviews.prototype._log = function(msg) {
