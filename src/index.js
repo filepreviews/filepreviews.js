@@ -153,7 +153,7 @@
           size = size + 'x' + options.size.height;
         }
 
-        extraParams += extraParams + '&size=' + size;
+        extraParams = extraParams + '&size=' + size;
       }
     }
 
