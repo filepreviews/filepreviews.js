@@ -1,4 +1,4 @@
-/* filepreviews 1.3.1 */
+/* filepreviews 1.3.2 */
 /**
 * XMLHttpRequest.js Copyright (C) 2011 Sergey Ilinsky (http://www.ilinsky.com)
 *
@@ -724,11 +724,11 @@
     if (options) {
 
       if (options.metadata) {
-        extraParams = '&metadata=' + options.metadata.join(',');
+        extraParams += '&metadata=' + options.metadata.join(',');
       }
 
       if (options.format) {
-        extraParams = '&format=' + options.format;
+        extraParams += '&format=' + options.format;
       }
 
       if (options.size) {
@@ -742,7 +742,7 @@
           size = size + 'x' + options.size.height;
         }
 
-        extraParams = extraParams + '&size=' + size;
+        extraParams += extraParams + '&size=' + size;
       }
     }
 

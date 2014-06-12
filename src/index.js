@@ -135,11 +135,11 @@
     if (options) {
 
       if (options.metadata) {
-        extraParams = '&metadata=' + options.metadata.join(',');
+        extraParams += '&metadata=' + options.metadata.join(',');
       }
 
       if (options.format) {
-        extraParams = '&format=' + options.format;
+        extraParams += '&format=' + options.format;
       }
 
       if (options.size) {
@@ -153,7 +153,7 @@
           size = size + 'x' + options.size.height;
         }
 
-        extraParams = extraParams + '&size=' + size;
+        extraParams += extraParams + '&size=' + size;
       }
     }
 
