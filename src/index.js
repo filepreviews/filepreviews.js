@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var API_URL = 'https://api.filepreviews.io/v1/?url=',
+  var API_URL = 'https://api.filepreviews.io/v1/',
       FilePreviews;
 
   FilePreviews = function(options) {
@@ -40,16 +40,21 @@
       }
     }
 
-    this._log('API request to: ' + this.getAPIRequestURL(url, options));
+    this._log('API request to: ' + API_URL);
 
-    var ajaxHeaders = {};
+    var data = this.getAPIRequestData(url, options),
+      ajaxHeaders = {
+        'Content-Type': 'application/json'
+      };
 
     if (this.apiKey) {
       ajaxHeaders['X-API-KEY'] = this.apiKey;
     }
 
-    ajax(this.getAPIRequestURL(url, options), {
+    ajax(API_URL, {
       headers: ajaxHeaders,
+      method: 'POST',
+      data: JSON.stringify(data),
 
       success: function(response, xhr) {
         this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
@@ -123,24 +128,16 @@
     return _getter();
   };
 
-  FilePreviews.prototype.getAPIRequestURL = function(url, options) {
+  FilePreviews.prototype.getAPIRequestData = function(url, options) {
     if (arguments.length === 1) {
       if (Object.prototype.toString.call(options) === '[object Function]') {
         options = false;
       }
     }
 
-    var extraParams = '';
-
     if (options) {
 
-      if (options.metadata) {
-        extraParams += '&metadata=' + options.metadata.join(',');
-      }
-
-      if (options.format) {
-        extraParams += '&format=' + options.format;
-      }
+      options.url = url;
 
       if (options.size) {
         var size = '';
@@ -153,19 +150,11 @@
           size = size + 'x' + options.size.height;
         }
 
-        extraParams = extraParams + '&size=' + size;
+        options.sizes = [size];
       }
     }
 
-    return API_URL + url + extraParams;
-  };
-
-  FilePreviews.prototype.getFilename = function(url) {
-    return url.split('/').pop();
-  };
-
-  FilePreviews.prototype.getPreviewFilename = function(filename) {
-    return filename.substr(0, filename.lastIndexOf('.')) || filename;
+    return options;
   };
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
