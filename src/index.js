@@ -29,7 +29,9 @@
       }
 
       this._log('Processing done :)');
-      callback(err, result);
+      if(callback) {
+        callback(err, result);
+      }
     }.bind(this));
   };
 
@@ -63,9 +65,9 @@
         this._log('API request response:', data);
 
         this._pollForMetadata(data.metadata_url, options, function(err, metadata) {
-          if (err) {
+          if (err && callback) {
             callback(err);
-          } else {
+          } else if(callback) {
             callback(null, {
               metadata: metadata,
               previewURL: data.preview_url
@@ -81,8 +83,11 @@
         } else {
           error = error + status;
         }
+
         this._log(error);
-        callback(error);
+        if(callback) {
+          callback(error);
+        }
 
       }.bind(this)
 
@@ -108,9 +113,9 @@
           this._log('Metadata found');
           var data = JSON.parse(response);
 
-          if (data.error) {
+          if (data.error && callback) {
             callback(data.error);
-          } else {
+          } else if(callback) {
             callback(null, data);
           }
         }.bind(this),
@@ -129,14 +134,11 @@
   };
 
   FilePreviews.prototype.getAPIRequestData = function(url, options) {
-    if (arguments.length === 1) {
-      if (Object.prototype.toString.call(options) === '[object Function]') {
-        options = false;
-      }
+    if(typeof(options) !== "object") {
+        options = {};
     }
 
     if (options) {
-
       options.url = url;
 
       if (options.size) {
