@@ -1,6 +1,6 @@
 {
   "name": "filepreviews",
-  "version": "1.3.3",
+  "version": "1.4.1",
   "main": "dist/filepreviews.js",
   "authors": [
     "Giovanni Collazo <hello@gcollazo.com>"
