@@ -1,6 +1,7 @@
 {
   "name": "filepreviews",
   "version": "1.4.2",
+  "private": true,
   "description": "Demo client library for FilePreviews.io - Generate image previews and metadata from almost any kind of file",
   "main": "./src/index.js",
   "repository": {

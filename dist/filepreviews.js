@@ -1,4 +1,4 @@
-/* filepreviews 1.4.1 */
+/* filepreviews 1.4.2 */
 /**
 * XMLHttpRequest.js Copyright (C) 2011 Sergey Ilinsky (http://www.ilinsky.com)
 *
