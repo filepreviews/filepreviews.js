@@ -21,6 +21,15 @@
             console.log(result);
           });
 
+          previews.generate(url, function(err, result) {
+            if (err) return console.error(err);
+            console.log(result);
+          });
+
+          previews.generate(url, options);
+
+          previews.generate(url);
+
         </script>
     </body>
 </html>

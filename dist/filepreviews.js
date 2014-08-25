@@ -1,4 +1,4 @@
-/* filepreviews 1.4.0 */
+/* filepreviews 1.4.1 */
 /**
 * XMLHttpRequest.js Copyright (C) 2011 Sergey Ilinsky (http://www.ilinsky.com)
 *
@@ -610,6 +610,8 @@
       if (Object.prototype.toString.call(options) === '[object Function]') {
         callback = options;
       }
+    } else if(arguments.length === 1) {
+      options = {};
     }
 
     this._submitJobToAPI(url, options, function(err, result) {
@@ -618,7 +620,9 @@
       }
 
       this._log('Processing done :)');
-      callback(err, result);
+      if (callback) {
+        callback(err, result);
+      }
     }.bind(this));
   };
 
@@ -627,6 +631,8 @@
       if (Object.prototype.toString.call(options) === '[object Function]') {
         callback = options;
       }
+    } else if(arguments.length === 1) {
+      options = {};
     }
 
     this._log('API request to: ' + API_URL);
@@ -684,6 +690,8 @@
       if (Object.prototype.toString.call(options) === '[object Function]') {
         callback = options;
       }
+    }  else if(arguments.length === 1) {
+      options = {};
     }
 
     var tries = 1,
@@ -718,10 +726,13 @@
   };
 
   FilePreviews.prototype.getAPIRequestData = function(url, options) {
-    if (arguments.length === 1) {
+    if (arguments.length === 2) {
       if (Object.prototype.toString.call(options) === '[object Function]') {
-        options = false;
+        options = {};
+        console.log('entro!');
       }
+    } else if(arguments.length === 1) {
+      options = {};
     }
 
     if (options) {
