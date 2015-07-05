@@ -1,7 +1,5 @@
 # FilePreviews.io
-This is a client library for the **Demo API** of [FilePreviews.io](http://filepreviews.io) service. A lot more to come very soon.
-
-[Sign up to beta](http://eepurl.com/To0U1)
+JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service. A lot more to come very soon.
 
 ## Installation
 ```
@@ -12,48 +10,49 @@ bower install filepreviews
 We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 
 ## Usage
-
-##### Latest version
+### Latest version
 ```html
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.min.js"></script>
-```
-```html
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.js"></script>
 ```
 
-##### You can also link to a specific version
+### You can also link to a specific version
 ```html
-<script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.min.js"></script>
-```
-```html
-<script src="//dufozrddxzwdn.cloudfront.net/ <VERSION_NUMBER> /filepreviews.js"></script>
+<script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.min.js"></script>
+<script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.js"></script>
 ```
 
-### Example code
+## Example code
 ```js
-var previews = new FilePreviews({debug: true});
+var previews = new FilePreviews({
+  debug: true,
+  apiKey: 'API_KEY_HERE'
+});
+
 previews.generate(url, function(err, result) {
-  console.log(result.previewURL);
-  console.log(result.metadata);
+  console.log(result.id);
+  console.log(result.status);
+
+  previews.retrieve(result.id, function(err, result) {
+    console.log(result);
+  });
 });
 ```
 
-#### Options
+### Options
 You can optinally send an options object.
 ```js
-var previews = new FilePreviews({debug: true});
+var previews = new FilePreviews({
+  debug: true,
+  apiKey: 'API_KEY_HERE'
+});
+
 var options = {
   size: {
-    width: 100,
-    height: 999,
+    width: 250,
+    height: 250,
   },
-  // supported:
-  // 'exif', 'ocr', 'psd', 'checksum', 'multimedia',
-  // and 'all' which means everything
   metadata: ['exif', 'ocr', 'psd'],
-
-  // supported:
-  // 'jpg', 'png'
   format: 'jpg'
 }
 
@@ -65,7 +64,7 @@ previews.generate(url, options, function(err, result) {
 
 ## Build
 ```
-git clone https://github.com/GetBlimp/filepreviews.js.git
-cd filepreviews.js
-npm install && grunt
+$ git clone https://github.com/GetBlimp/filepreviews.js.git
+$ cd filepreviews.js
+$ npm run build
 ```
