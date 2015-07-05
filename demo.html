@@ -1,35 +1,47 @@
 <html>
-    <body>
-        <script src="dist/filepreviews.js"></script>
-        <script type="text/javascript">
-          'use strict';
+  <body>
+    <script src="dist/filepreviews.js"></script>
+    <script type="text/javascript">
+      var previews = new FilePreviews({
+        debug: true,
+        apiKey: 'mlkG193VUyng3JR8jaNaXurSk10TJZ'
+      });
 
-          var previews = new FilePreviews({debug: true});
+      var url = 'http://i.imgur.com/HvAx8vL.jpg';
+      var options = {
+        size: {
+          width: 100,
+          height: 999
+        },
+        metadata: ['exif', 'ocr', 'psd'],
+        format: 'jpg'
+      };
 
-          var url = 'http://i.imgur.com/HvAx8vL.jpg';
-          var options = {
-            size: {
-              width: 100,
-              height: 999,
-            },
-            metadata: ['exif', 'ocr', 'psd'],
-            format: 'jpg'
-          };
+      previews.generate(url, options, function(err, result) {
+        if (err) {
+          return console.error(err);
+        }
 
-          previews.generate(url, options, function(err, result) {
-            if (err) return console.error(err);
-            console.log(result);
-          });
+        previews.retrieve(result.id, function(err, result) {
+          if (err) {
+            return console.error(err);
+          }
 
-          previews.generate(url, function(err, result) {
-            if (err) return console.error(err);
-            console.log(result);
-          });
+          console.log(result);
+        });
+      });
 
-          previews.generate(url, options);
+      previews.generate(url, function(err, result) {
+        if (err) {
+          return console.error(err);
+        }
 
-          previews.generate(url);
+        console.log(result);
+      });
 
-        </script>
-    </body>
+      previews.generate(url, options);
+
+      previews.generate(url);
+    </script>
+  </body>
 </html>

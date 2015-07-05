@@ -587,21 +587,25 @@
     return ajax;
 }));
 
-(function() {
-  'use strict';
-
-  var API_URL = 'https://api.filepreviews.io/v1/',
-      FilePreviews;
+((function() {
+  var FilePreviews;
+  var API_URL = 'https://api.filepreviews.io/v2';
 
   FilePreviews = function(options) {
-    options = options || {};
+    var opts = options || {};
 
-    this.debug = options.debug || false;
-    this.apiKey = options.apiKey;
+    this.debug = opts.debug || false;
+    if (!opts.apiKey) {
+      throw new Error('Missing required apiKey.');
+    }
+    this.apiKey = opts.apiKey;
   };
 
-  FilePreviews.prototype._log = function(msg) {
-    if (this.debug) console.log(msg);
+  FilePreviews.prototype.log = function(msg) {
+    if (this.debug) {
+      console.log(msg);
+    }
+
     return this;
   };
 
@@ -610,137 +614,94 @@
       if (Object.prototype.toString.call(options) === '[object Function]') {
         callback = options;
       }
-    } else if(arguments.length === 1) {
+    } else if (arguments.length === 1) {
       options = {};
     }
 
-    this._submitJobToAPI(url, options, function(err, result) {
-      if (err) {
-        this._log('Error: ' + err);
-      }
-
-      this._log('Processing done :)');
+    this.request(API_URL + '/previews/', {
+      method: 'POST',
+      data: JSON.stringify(this.getAPIRequestData(url, options))
+    },
+    function(err, result) {
       if (callback) {
         callback(err, result);
       }
-    }.bind(this));
-  };
-
-  FilePreviews.prototype._submitJobToAPI = function(url, options, callback) {
-    if (arguments.length === 2) {
-      if (Object.prototype.toString.call(options) === '[object Function]') {
-        callback = options;
-      }
-    } else if(arguments.length === 1) {
-      options = {};
-    }
-
-    this._log('API request to: ' + API_URL);
-
-    var data = this.getAPIRequestData(url, options),
-      ajaxHeaders = {
-        'Content-Type': 'application/json'
-      };
-
-    if (this.apiKey) {
-      ajaxHeaders['X-API-KEY'] = this.apiKey;
-    }
-
-    ajax(API_URL, {
-      headers: ajaxHeaders,
-      method: 'POST',
-      data: JSON.stringify(data),
-
-      success: function(response, xhr) {
-        this._log('API request success: ' + xhr.status + ' ' + xhr.statusText);
-
-        var data = JSON.parse(response);
-        this._log('API request response:', data);
-
-        this._pollForMetadata(data.metadata_url, options, function(err, metadata) {
-          if (err) {
-            callback(err);
-          } else {
-            callback(null, {
-              metadata: metadata,
-              previewURL: data.preview_url
-            });
-          }
-        }.bind(this));
-      }.bind(this),
-
-      error: function(status, message, xhr) {
-        var error = 'API request error: ';
-        if (status === 429) {
-          error = error + 'Throttling error, try later';
-        } else {
-          error = error + status;
-        }
-        this._log(error);
-        callback(error);
-
-      }.bind(this)
-
     });
   };
 
-  FilePreviews.prototype._pollForMetadata = function(url, options, callback) {
-    this._log('Metadata poll url: ' + url);
-    if (arguments.length === 2) {
-      if (Object.prototype.toString.call(options) === '[object Function]') {
-        callback = options;
+  FilePreviews.prototype.retrieve = function(previewId, callback) {
+    this.request(API_URL + '/previews/' + previewId + '/', {
+      method: 'GET'
+    },
+    function(err, result) {
+      if (callback) {
+        callback(err, result);
       }
-    }  else if(arguments.length === 1) {
-      options = {};
-    }
+    });
+  };
 
-    var tries = 1,
-        pause = 1000;
+  FilePreviews.prototype.request = function(url, options, callback) {
+    var data;
 
-    var _getter = function() {
-      this._log('Polling for metadata, tries: ' + tries);
+    var onSuccess = function(response, xhr) {
+      this.log('API request success: ' + xhr.status + ' ' + xhr.statusText);
 
-      ajax(url, {
-        success: function(response, xhr) {
-          this._log('Metadata found');
-          var data = JSON.parse(response);
+      data = JSON.parse(response);
+      this.log('API request response:', data);
 
-          if (data.error) {
-            callback(data.error);
-          } else {
-            callback(null, data);
-          }
-        }.bind(this),
-
-        error: function(status, message, xhr) {
-          pause = pause + (tries * 1000);
-          tries++;
-
-          this._log('Metadata not found next try in: ' + pause / 1000 + 's');
-          setTimeout(_getter, pause);
-        }.bind(this)
-      });
+      callback(null, data);
     }.bind(this);
 
-    return _getter();
+    var onError = function(status, message, xhr) {
+      data = JSON.parse(xhr.responseText);
+
+      if (status === 201) {
+        onSuccess(xhr.responseText, xhr);
+      } else {
+        this.log('API request error: ' + status);
+        callback(data);
+      }
+    }.bind(this);
+
+    var requestOptions = {
+      headers: this.getAPIRequestHeaders(),
+      method: options.method,
+      success: onSuccess,
+      error: onError
+    };
+
+    if (options.data) {
+      requestOptions.data = options.data;
+    }
+
+    this.log('API request to: ' + url);
+
+    ajax(url, requestOptions);
+  };
+
+  FilePreviews.prototype.getAPIRequestHeaders = function() {
+    return {
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa(this.apiKey) + ':'
+    };
   };
 
   FilePreviews.prototype.getAPIRequestData = function(url, options) {
+    var size;
+
     if (arguments.length === 2) {
       if (Object.prototype.toString.call(options) === '[object Function]') {
         options = {};
-        console.log('entro!');
       }
-    } else if(arguments.length === 1) {
+    } else if (arguments.length === 1) {
       options = {};
     }
 
     if (options) {
-
       options.url = url;
 
       if (options.size) {
-        var size = '';
+        size = '';
 
         if (options.size.width) {
           size = options.size.width;
@@ -764,4 +725,4 @@
   }
 
   return FilePreviews;
-})();
+})());
