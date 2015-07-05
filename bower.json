@@ -1,11 +1,11 @@
 {
   "name": "filepreviews",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "main": "dist/filepreviews.js",
   "authors": [
     "Giovanni Collazo <hello@gcollazo.com>"
   ],
-  "description": "Demo client library for FilePreviews.io - Generate image previews and metadata from almost any kind of file",
+  "description": "Client library for FilePreviews.io - Generate image previews and metadata from almost any kind of file",
   "repository": {
     "type": "git",
     "url": "git@github.com:GetBlimp/filepreviews.js"
