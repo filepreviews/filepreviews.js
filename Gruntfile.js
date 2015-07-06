@@ -14,6 +14,7 @@ module.exports =  function(grunt) {
       },
       dist: {
         src: [
+          'bower_components/base64/base64.js',
           'bower_components/xhr/XMLHttpRequest.js',
           'bower_components/xhr-ajax/xhr-ajax.js',
           'src/**/*.js'

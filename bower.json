@@ -19,6 +19,7 @@
     "tests"
   ],
   "devDependencies": {
-    "xhr-ajax": "~1.0.0"
+    "xhr-ajax": "~1.0.0",
+    "base64": "~0.3.0"
   }
 }
