@@ -57,8 +57,8 @@ var options = {
 }
 
 previews.generate(url, options, function(err, result) {
-  console.log(result.previewURL);
-  console.log(result.metadata);
+  console.log(result.id);
+  console.log(result.status);
 });
 ```
 
