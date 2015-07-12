@@ -1,9 +1,10 @@
 # FilePreviews.io
-JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service. A lot more to come very soon.
+JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service.Generate image previews and metadata from almost any kind of file.
 
 ## Installation
+
 ```
-bower install filepreviews
+$ bower install filepreviews
 ```
 
 ## Demo
@@ -11,18 +12,21 @@ We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
 
 ## Usage
 ### Latest version
+
 ```html
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.min.js"></script>
 <script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.js"></script>
 ```
 
 ### You can also link to a specific version
+
 ```html
 <script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.min.js"></script>
 <script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.js"></script>
 ```
 
 ## Example code
+
 ```js
 var previews = new FilePreviews({
   debug: true,
@@ -40,7 +44,8 @@ previews.generate(url, function(err, result) {
 ```
 
 ### Options
-You can optinally send an options object.
+You can optionally send an options object.
+
 ```js
 var previews = new FilePreviews({
   debug: true,
