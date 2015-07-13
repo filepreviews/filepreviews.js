@@ -1,4 +1,4 @@
-/** filepreviews 2.0.0-beta.1 **/
+/** filepreviews 2.0.0-beta.2 **/
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
@@ -649,133 +649,149 @@
     return ajax;
 }));
 
+/* global ajax */
+
 'use strict';
 
-var FilePreviews;
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-FilePreviews = function (options) {
-  var opts = options || {};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  this.API_URL = 'https://api.filepreviews.io/v2';
+var FilePreviews = (function () {
+  function FilePreviews(options) {
+    _classCallCheck(this, FilePreviews);
 
-  this.debug = opts.debug || false;
-  if (!opts.apiKey) {
-    throw new Error('Missing required apiKey.');
-  }
-  this.apiKey = opts.apiKey;
-};
+    var opts = options || {};
 
-FilePreviews.prototype.log = function (msg) {
-  if (this.debug) {
-    console.log(msg);
-  }
+    this.API_URL = 'https://api.filepreviews.io/v2';
 
-  return this;
-};
-
-FilePreviews.prototype.generate = function (url, options, callback) {
-  if (arguments.length === 2) {
-    if (Object.prototype.toString.call(options) === '[object Function]') {
-      callback = options;
+    this.debug = opts.debug || false;
+    if (!opts.apiKey) {
+      throw new Error('Missing required apiKey.');
     }
-  } else if (arguments.length === 1) {
-    options = {};
+    this.apiKey = opts.apiKey;
   }
 
-  this.request(this.API_URL + '/previews/', {
-    method: 'POST',
-    data: JSON.stringify(this.getAPIRequestData(url, options))
-  }, function (err, result) {
-    if (callback) {
-      callback(err, result);
+  _createClass(FilePreviews, [{
+    key: 'log',
+    value: function log(msg) {
+      if (this.debug) {
+        console.log(msg);
+      }
     }
-  });
-};
-
-FilePreviews.prototype.retrieve = function (previewId, callback) {
-  this.request(this.API_URL + '/previews/' + previewId + '/', {
-    method: 'GET'
-  }, function (err, result) {
-    if (callback) {
-      callback(err, result);
-    }
-  });
-};
-
-FilePreviews.prototype.request = function (url, options, callback) {
-  var data;
-
-  var onSuccess = (function (response, xhr) {
-    this.log('API request success: ' + xhr.status + ' ' + xhr.statusText);
-
-    data = JSON.parse(response);
-    this.log('API request response:', data);
-
-    callback(null, data);
-  }).bind(this);
-
-  var onError = (function (status, message, xhr) {
-    data = JSON.parse(xhr.responseText);
-
-    if (status === 201) {
-      onSuccess(xhr.responseText, xhr);
-    } else {
-      this.log('API request error: ' + status);
-      callback(data);
-    }
-  }).bind(this);
-
-  var requestOptions = {
-    headers: this.getAPIRequestHeaders(),
-    method: options.method,
-    success: onSuccess,
-    error: onError
-  };
-
-  if (options.data) {
-    requestOptions.data = options.data;
-  }
-
-  this.log('API request to: ' + url);
-
-  ajax(url, requestOptions);
-};
-
-FilePreviews.prototype.getAPIRequestHeaders = function () {
-  return {
-    'Content-Type': 'application/json',
-    Authorization: 'Basic ' + btoa(this.apiKey) + ':'
-  };
-};
-
-FilePreviews.prototype.getAPIRequestData = function (url, options) {
-  var size;
-
-  if (arguments.length === 2) {
-    if (Object.prototype.toString.call(options) === '[object Function]') {
-      options = {};
-    }
-  } else if (arguments.length === 1) {
-    options = {};
-  }
-
-  if (options) {
-    options.url = url;
-
-    if (options.size) {
-      size = '';
-
-      if (options.size.width) {
-        size = options.size.width;
+  }, {
+    key: 'generate',
+    value: function generate(url, options, callback) {
+      if (arguments.length === 2) {
+        if (Object.prototype.toString.call(options) === '[object Function]') {
+          callback = options;
+        }
+      } else if (arguments.length === 1) {
+        options = {};
       }
 
-      if (options.size.height) {
-        size = size + 'x' + options.size.height;
+      this.request(this.API_URL + '/previews/', {
+        method: 'POST',
+        data: JSON.stringify(this.getAPIRequestData(url, options))
+      }, function (err, result) {
+        if (callback) {
+          callback(err, result);
+        }
+      });
+    }
+  }, {
+    key: 'retrieve',
+    value: function retrieve(previewId, callback) {
+      this.request(this.API_URL + '/previews/' + previewId + '/', {
+        method: 'GET'
+      }, function (err, result) {
+        if (callback) {
+          callback(err, result);
+        }
+      });
+    }
+  }, {
+    key: 'request',
+    value: function request(url, options, callback) {
+      var data;
+
+      var onSuccess = (function (response, xhr) {
+        this.log('API request success: ' + xhr.status + ' ' + xhr.statusText);
+
+        data = JSON.parse(response);
+        this.log('API request response: ' + data);
+
+        callback(null, data);
+      }).bind(this);
+
+      var onError = (function (status, message, xhr) {
+        data = JSON.parse(xhr.responseText);
+
+        if (status === 201) {
+          onSuccess(xhr.responseText, xhr);
+        } else {
+          this.log('API request error: ' + status);
+          callback(data);
+        }
+      }).bind(this);
+
+      var requestOptions = {
+        headers: this.getAPIRequestHeaders(),
+        method: options.method,
+        success: onSuccess,
+        error: onError
+      };
+
+      if (options.data) {
+        requestOptions.data = options.data;
       }
 
-      options.sizes = [size];
-    }
-  }
+      this.log('API request to: ' + url);
 
-  return options;
-};
+      ajax(url, requestOptions);
+    }
+  }, {
+    key: 'getAPIRequestHeaders',
+    value: function getAPIRequestHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + btoa(this.apiKey) + ':'
+      };
+    }
+  }, {
+    key: 'getAPIRequestData',
+    value: function getAPIRequestData(url, options) {
+      var size;
+
+      if (arguments.length === 2) {
+        if (Object.prototype.toString.call(options) === '[object Function]') {
+          options = {};
+        }
+      } else if (arguments.length === 1) {
+        options = {};
+      }
+
+      if (options) {
+        options.url = url;
+
+        if (options.size) {
+          size = '';
+
+          if (options.size.width) {
+            size = options.size.width;
+          }
+
+          if (options.size.height) {
+            size = size + ' x ' + options.size.height;
+          }
+
+          options.sizes = [size];
+        }
+      }
+
+      return options;
+    }
+  }]);
+
+  return FilePreviews;
+})();
