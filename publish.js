@@ -16,7 +16,8 @@ var uploader = client.uploadDir({
 
   s3Params: {
     Bucket: process.env.AWS_S3_BUCKET,
-    Prefix: pkg.version
+    Prefix: pkg.version,
+    ACL: 'public-read'
   }
 });
 

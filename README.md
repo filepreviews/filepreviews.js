@@ -1,32 +1,22 @@
 # FilePreviews.io
-JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service.Generate image previews and metadata from almost any kind of file.
+JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service.
 
-## Installation
-
+## How to use
+#### Install using bower
 ```
-$ bower install filepreviews
+bower install filepreviews
 ```
 
-## Demo
-We have a working [demo on jsBin](http://jsbin.com/losaf/39/edit?js,output).
-
-## Usage
-### Latest version
-
+#### Use from our CDN distribution
 ```html
-<script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.min.js"></script>
-<script src="//dufozrddxzwdn.cloudfront.net/latest/filepreviews.js"></script>
+<script src="https://dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.min.js"></script>
+<script src="https://dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.js"></script>
 ```
 
-### You can also link to a specific version
-
-```html
-<script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.min.js"></script>
-<script src="//dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.js"></script>
-```
+#### Download
+You can also download the latest version from the [releases page](https://github.com/GetBlimp/filepreviews.js/releases/).
 
 ## Example code
-
 ```js
 var previews = new FilePreviews({
   debug: true,
@@ -44,8 +34,7 @@ previews.generate(url, function(err, result) {
 ```
 
 ### Options
-You can optionally send an options object.
-
+You can optinally send an options object.
 ```js
 var previews = new FilePreviews({
   debug: true,
@@ -62,8 +51,8 @@ var options = {
 }
 
 previews.generate(url, options, function(err, result) {
-  console.log(result.id);
-  console.log(result.status);
+  console.log(result.previewURL);
+  console.log(result.metadata);
 });
 ```
 
@@ -72,4 +61,9 @@ previews.generate(url, options, function(err, result) {
 $ git clone https://github.com/GetBlimp/filepreviews.js.git
 $ cd filepreviews.js
 $ npm run build
+```
+
+## Publish
+```
+$ npm run publish
 ```
