@@ -5,12 +5,14 @@ class FilePreviews {
     var opts = options || {};
 
     this.API_URL = 'https://api.filepreviews.io/v2';
-
     this.debug = opts.debug || false;
+    this.apiKey = opts.apiKey;
+    this._ajax = ajax;
+
     if (!opts.apiKey) {
       throw new Error('Missing required apiKey.');
     }
-    this.apiKey = opts.apiKey;
+
   }
 
   log(msg) {
@@ -52,18 +54,23 @@ class FilePreviews {
 
   request(url, options, callback) {
     var data;
+    var _options = options || {};
 
-    var onSuccess = function(response, xhr) {
+    var onSuccess = (response, xhr) => {
       this.log(`API request success: ${xhr.status} ${xhr.statusText}`);
 
       data = JSON.parse(response);
       this.log(`API request response: ${data}`);
 
       callback(null, data);
-    }.bind(this);
+    };
 
-    var onError = function(status, message, xhr) {
-      data = JSON.parse(xhr.responseText);
+    var onError = (status, message, xhr) => {
+      try {
+        data = JSON.parse(xhr.responseText);
+      } catch (e) {
+        data = xhr.responseText;
+      }
 
       if (status === 201) {
         onSuccess(xhr.responseText, xhr);
@@ -71,22 +78,22 @@ class FilePreviews {
         this.log(`API request error: ${status}`);
         callback(data);
       }
-    }.bind(this);
+    };
 
     var requestOptions = {
       headers: this.getAPIRequestHeaders(),
-      method: options.method,
+      method: _options.method || 'GET',
       success: onSuccess,
       error: onError
     };
 
-    if (options.data) {
-      requestOptions.data = options.data;
+    if (_options.data) {
+      requestOptions.data = _options.data;
     }
 
     this.log(`API request to: ${url}`);
 
-    ajax(url, requestOptions);
+    this._ajax(url, requestOptions);
   }
 
   getAPIRequestHeaders() {
@@ -118,7 +125,7 @@ class FilePreviews {
         }
 
         if (options.size.height) {
-          size = `${size} x ${options.size.height}`;
+          size = `${size}x${options.size.height}`;
         }
 
         options.sizes = [size];
