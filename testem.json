@@ -1,5 +1,6 @@
 {
-  "launch_in_dev": ["Phantomjs", "Chrome"],
+  "launch_in_dev": ["PhantomJS", "Chrome"],
+  "launch_in_ci": ["PhantomJS"],
   "framework": "mocha",
   "src_files": [
     "node_modules/chai/chai.js",

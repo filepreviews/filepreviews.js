@@ -1,4 +1,6 @@
 # FilePreviews.io
+[![Build Status](https://travis-ci.org/GetBlimp/filepreviews.js.svg)](https://travis-ci.org/GetBlimp/filepreviews.js)
+
 JavaScript client library for the [FilePreviews.io](http://filepreviews.io) service.
 
 ## How to use
