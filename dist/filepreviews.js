@@ -762,6 +762,7 @@ var FilePreviews = (function () {
     key: 'getAPIRequestHeaders',
     value: function getAPIRequestHeaders() {
       return {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: 'Basic ' + btoa(this.apiKey) + ':'
       };
