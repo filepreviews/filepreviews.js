@@ -98,6 +98,7 @@ class FilePreviews {
 
   getAPIRequestHeaders() {
     return {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       Authorization: `Basic ${btoa(this.apiKey)}:`
     };

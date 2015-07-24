@@ -87,6 +87,7 @@ describe('Suite', function() {
       var fp = new FilePreviews({ apiKey: 'key' });
       var headers = fp.getAPIRequestHeaders();
 
+      assert.equal(headers.Accept, 'application/json');
       assert.equal(headers['Content-Type'], 'application/json');
       assert.equal(headers.Authorization, 'Basic a2V5:');
     });
