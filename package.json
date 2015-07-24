@@ -11,7 +11,8 @@
   "scripts": {
     "build": "rm -rf dist/ tmp/ && broccoli build dist",
     "publish": "npm run build && node publish.js",
-    "test": "testem ci"
+    "test": "testem ci",
+    "tdd": "testem"
   },
   "author": "Giovanni Collazo <hello@gcollazo.com>",
   "contributors": [

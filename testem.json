@@ -1,5 +1,5 @@
 {
-  "launch_in_dev": ["PhantomJS", "Chrome"],
+  "launch_in_dev": ["PhantomJS", "Chrome", "Firefox"],
   "launch_in_ci": ["PhantomJS"],
   "framework": "mocha",
   "src_files": [
