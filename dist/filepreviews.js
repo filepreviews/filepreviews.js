@@ -1,4 +1,4 @@
-/** filepreviews 2.0.1 **/
+/** filepreviews 2.0.3 **/
 ;(function () {
 
   var object = typeof exports != 'undefined' ? exports : this; // #8: web workers
