@@ -60,7 +60,7 @@ class FilePreviews {
       this.log(`API request success: ${xhr.status} ${xhr.statusText}`);
 
       data = JSON.parse(response);
-      this.log(`API request response: ${data}`);
+      this.log(`API request response: ${response}`);
 
       callback(null, data);
     };
