@@ -11,8 +11,8 @@ bower install filepreviews
 
 #### Use from our CDN distribution
 ```html
-<script src="https://dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.min.js"></script>
-<script src="https://dufozrddxzwdn.cloudfront.net/<VERSION_NUMBER>/filepreviews.js"></script>
+<script src="https://dufozrddxzwdn.cloudfront.net/2.0.3/filepreviews.min.js"></script>
+<script src="https://dufozrddxzwdn.cloudfront.net/2.0.3/filepreviews.js"></script>
 ```
 
 #### Download
