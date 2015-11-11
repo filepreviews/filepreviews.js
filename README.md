@@ -40,7 +40,7 @@ You can optinally send an options object.
 ```js
 var previews = new FilePreviews({
   debug: true,
-  apiKey: 'API_KEY_HERE'
+  apiKey: 'CLIENT_API_KEY_HERE'
 });
 
 var options = {
