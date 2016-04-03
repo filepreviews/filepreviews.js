@@ -2,11 +2,12 @@
 
 class FilePreviews {
   constructor(options) {
-    var opts = options || {};
+    const API_URL = 'https://api.filepreviews.io/v2';
+    const opts = options || {};
 
-    this.API_URL = 'https://api.filepreviews.io/v2';
-    this.debug = opts.debug || false;
+    this.apiUrl = opts.apiUrl || API_URL;
     this.apiKey = opts.apiKey;
+    this.debug = opts.debug || false;
     this._ajax = ajax;
 
     if (!opts.apiKey) {
@@ -30,11 +31,10 @@ class FilePreviews {
       options = {};
     }
 
-    this.request(`${this.API_URL}/previews/`, {
+    this.request(`${this.apiUrl}/previews/`, {
       method: 'POST',
       data: JSON.stringify(this.getAPIRequestData(url, options))
-    },
-    function(err, result) {
+    }, (err, result) => {
       if (callback) {
         callback(err, result);
       }
@@ -42,10 +42,9 @@ class FilePreviews {
   }
 
   retrieve(previewId, callback) {
-    this.request(`${this.API_URL}/previews/${previewId}/`, {
+    this.request(`${this.apiUrl}/previews/${previewId}/`, {
       method: 'GET'
-    },
-    function(err, result) {
+    }, (err, result) => {
       if (callback) {
         callback(err, result);
       }
@@ -53,10 +52,10 @@ class FilePreviews {
   }
 
   request(url, options, callback) {
-    var data;
-    var _options = options || {};
+    let data;
+    const _options = options || {};
 
-    var onSuccess = (response, xhr) => {
+    const onSuccess = (response, xhr) => {
       this.log(`API request success: ${xhr.status} ${xhr.statusText}`);
 
       data = JSON.parse(response);
@@ -65,7 +64,7 @@ class FilePreviews {
       callback(null, data);
     };
 
-    var onError = (status, message, xhr) => {
+    const onError = (status, message, xhr) => {
       try {
         data = JSON.parse(xhr.responseText);
       } catch (e) {
@@ -80,7 +79,7 @@ class FilePreviews {
       }
     };
 
-    var requestOptions = {
+    const requestOptions = {
       headers: this.getAPIRequestHeaders(),
       method: _options.method || 'GET',
       success: onSuccess,
@@ -105,7 +104,7 @@ class FilePreviews {
   }
 
   getAPIRequestData(url, options) {
-    var size;
+    let size;
 
     if (arguments.length === 2) {
       if (Object.prototype.toString.call(options) === '[object Function]') {

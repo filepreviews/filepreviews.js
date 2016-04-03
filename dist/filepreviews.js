@@ -661,11 +661,12 @@ var FilePreviews = (function () {
   function FilePreviews(options) {
     _classCallCheck(this, FilePreviews);
 
+    var API_URL = 'https://api.filepreviews.io/v2';
     var opts = options || {};
 
-    this.API_URL = 'https://api.filepreviews.io/v2';
-    this.debug = opts.debug || false;
+    this.apiUrl = opts.apiUrl || API_URL;
     this.apiKey = opts.apiKey;
+    this.debug = opts.debug || false;
     this._ajax = ajax;
 
     if (!opts.apiKey) {
@@ -691,7 +692,7 @@ var FilePreviews = (function () {
         options = {};
       }
 
-      this.request(this.API_URL + '/previews/', {
+      this.request(this.apiUrl + '/previews/', {
         method: 'POST',
         data: JSON.stringify(this.getAPIRequestData(url, options))
       }, function (err, result) {
@@ -703,7 +704,7 @@ var FilePreviews = (function () {
   }, {
     key: 'retrieve',
     value: function retrieve(previewId, callback) {
-      this.request(this.API_URL + '/previews/' + previewId + '/', {
+      this.request(this.apiUrl + '/previews/' + previewId + '/', {
         method: 'GET'
       }, function (err, result) {
         if (callback) {
@@ -716,14 +717,14 @@ var FilePreviews = (function () {
     value: function request(url, options, callback) {
       var _this = this;
 
-      var data;
+      var data = undefined;
       var _options = options || {};
 
       var onSuccess = function onSuccess(response, xhr) {
         _this.log('API request success: ' + xhr.status + ' ' + xhr.statusText);
 
         data = JSON.parse(response);
-        _this.log('API request response: ' + data);
+        _this.log('API request response: ' + response);
 
         callback(null, data);
       };
@@ -770,7 +771,7 @@ var FilePreviews = (function () {
   }, {
     key: 'getAPIRequestData',
     value: function getAPIRequestData(url, options) {
-      var size;
+      var size = undefined;
 
       if (arguments.length === 2) {
         if (Object.prototype.toString.call(options) === '[object Function]') {

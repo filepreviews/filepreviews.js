@@ -19,6 +19,11 @@ describe('Suite', function() {
       var fp = new FilePreviews({ apiKey: 'key' });
       assert.equal(fp.apiKey, 'key');
     });
+
+    it('should set apiUrl', function() {
+      var fp = new FilePreviews({ apiKey: 'key', apiUrl: 'http://localhost:8000/v2' });
+      assert.equal(fp.apiUrl, 'http://localhost:8000/v2');
+    })
   });
 
   describe('#getAPIRequestData()', function() {
