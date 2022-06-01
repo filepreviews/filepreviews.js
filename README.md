@@ -1,3 +1,5 @@
+**⚠️ Deprecated ⚠️**
+
 # FilePreviews.io
 [![Build Status](https://travis-ci.org/GetBlimp/filepreviews.js.svg)](https://travis-ci.org/GetBlimp/filepreviews.js)
 
